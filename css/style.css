@@ -1,0 +1,325 @@
+body {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    margin: 0;
+    padding: 0;
+    background-color: #eee; 
+}
+
+table.layout-table {
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+    width: 900px;
+    border: 0; 
+}
+
+
+.header-table {
+    background-color: #ff8000; 
+    color: white;
+    margin-bottom: 0; 
+}
+.header-table td {
+    vertical-align: middle; 
+    padding: 5px; 
+}
+.logo-cell {
+    width: 150px;
+    text-align: center;
+}
+.logo-cell img {
+    max-height: 60px; 
+    display: block; 
+    margin: 0 auto;
+}
+.title-cell {
+    text-align: center;
+}
+.title-cell h1 {
+    margin: 0;
+    font-size: 24px; /* Подбираем размер */
+    color: white;
+}
+.login-cell {
+    width: 200px;
+    vertical-align: middle;
+}
+.login-cell table { /* Стили для вложенной таблицы логина */
+    width: 100%;
+    font-size: 12px;
+}
+.login-cell td {
+    text-align: right;
+    padding: 2px 5px; /* Меньшие отступы для формы */
+}
+.login-cell input[type="text"],
+.login-cell input[type="password"] {
+    padding: 4px;
+    width: 120px; /* Ширина полей ввода */
+    margin-bottom: 2px;
+    border: 1px solid #ccc;
+}
+.login-cell input[type="submit"] {
+    padding: 4px 8px;
+    background-color: #e87400;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+}
+.login-cell a {
+    color: #fff0cc;
+    font-size: 12px;
+    text-decoration: underline;
+}
+.login-cell a:hover {
+    text-decoration: none;
+}
+
+/* --- Навигация (вторая таблица) --- */
+.nav-table {
+    background-color: #ff9900; /* Lighter orange */
+    margin-top: 0; /* Убираем отступ сверху */
+    margin-bottom: 10px; /* Отступ снизу до контента */
+}
+.nav-table td {
+    text-align: center;
+    padding: 8px 5px; /* Отступы в ячейках навигации */
+}
+.nav-table a {
+    color: #444; /* Dark text */
+    text-decoration: none;
+    font-weight: bold;
+    padding: 5px 10px; /* Отступы для самой ссылки */
+}
+.nav-table a:hover,
+.nav-table a.active { /* Стиль активного пункта */
+    color: white;
+    background-color: #ff8000; /* Darker orange */
+    border-radius: 4px;
+}
+.search-cell {
+    text-align: right;
+}
+.search-cell input[type="text"] {
+    padding: 4px;
+    border: 1px solid #ccc;
+    font-size: 12px;
+}
+.search-cell input[type="button"] {
+    padding: 4px 8px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+/* --- Основной контент (третья таблица) --- */
+.content-table {
+     margin-top: 0; /* Убрать возможный отступ */
+}
+.content-table td {
+    vertical-align: top; /* Выравнивание по верху по умолчанию */
+    padding: 10px; /* Общий паддинг для ячеек контента */
+}
+
+/* Левая колонка (меню) */
+.sidebar-left {
+    width: 150px;
+    background-color: #ff8000; /* Orange */
+    text-align: center;
+}
+.sidebar-left a {
+    color: white;
+    text-decoration: none;
+    display: block; /* Ссылки друг под другом */
+    padding: 8px 5px;
+    margin-bottom: 5px; /* Отступ между ссылками */
+}
+.sidebar-left a:hover {
+    background-color: #ff9900; /* Lighter orange on hover */
+}
+
+/* Центральная колонка (основной контент) */
+.main-content-cell {
+    background-color: #ffffff; /* White background */
+    color: #333;
+}
+.main-content-cell h1, /* Стили для заголовков в контенте */
+.main-content-cell h2 {
+    color: #ff8000;
+    text-align: center;
+    margin-top: 0;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+.main-content-cell h3 {
+    color: #cc6600; /* Darker orange */
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+.main-content-cell p {
+    line-height: 1.6;
+    margin-bottom: 15px;
+    text-align: justify; /* Выравнивание текста по ширине */
+}
+.main-content-cell img.align-left { /* Картинка с обтеканием */
+    float: right;
+    margin: 0 15px 0 10px;
+    border: 1px solid #ccc;
+    padding: 2px;
+    max-width: 150px; /* Ограничим размер */
+}
+.main-content-cell img.product-image { /* Картинка товара */
+    display: block; /* Чтобы работали отступы */
+    margin: 0 auto 15px auto; /* Центрирование */
+    max-width: 90%;
+    height: auto;
+    border: 1px solid #ddd;
+    padding: 4px;
+    background-color: #f9f9f9;
+}
+.main-content-cell ul,
+.main-content-cell ol {
+    margin-left: 20px;
+    padding-left: 20px;
+    margin-bottom: 15px;
+}
+.main-content-cell li {
+    margin-bottom: 8px;
+}
+/* Стили для таблицы из примера */
+.example-table {
+    border: 1px solid #555; /* Граница как в макете */
+    border-collapse: collapse; /* Убираем двойные рамки */
+    margin: 15px 0; /* Отступы вокруг таблицы */
+}
+.example-table td {
+    border: 1px solid #555; /* Границы ячеек */
+    padding: 10px; /* Внутренние отступы ячеек (вместо cellpadding) */
+    vertical-align: middle; /* Для примера выравнивание по центру */
+    text-align: center;
+}
+
+/* Правая колонка (баннеры) */
+.sidebar-right {
+    width: 190px;
+    background-color: #ff8000; /* Orange */
+    text-align: center;
+    color: white;
+}
+.sidebar-right a {
+    display: block; /* Чтобы занимали всю ширину */
+    margin-bottom: 15px; /* Отступ между баннерами */
+}
+.sidebar-right img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ff9900; /* Рамка вокруг баннера */
+}
+
+/* --- Подвал (добавленная строка в content-table) --- */
+.footer-cell {
+    background-color: #ff8000; /* Orange */
+    color: white;
+    text-align: center;
+    font-size: 12px;
+    padding: 10px; /* Паддинг для подвала */
+    vertical-align: middle;
+}
+
+/* --- Стили для каталога --- */
+.catalog-grid {
+    display: flex; /* Используем flex для удобного расположения карточек */
+    flex-wrap: wrap;
+    gap: 15px; /* Пространство между карточками */
+    justify-content: center; /* Центрирование карточек */
+}
+.product-card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    text-align: center;
+    background-color: #f9f9f9;
+    width: calc(33.33% - 30px); /* ~3 карточки в ряд с учетом gap */
+    box-sizing: border-box;
+}
+.product-card img {
+    max-width: 100%;
+    height: 150px;
+    object-fit: contain;
+    margin-bottom: 10px;
+    border: 1px solid #eee;
+}
+.product-card h4 {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    color: #333;
+}
+.product-card a {
+    text-decoration: none;
+    color: #ff8000;
+    font-weight: bold;
+    font-size: 13px;
+}
+.product-card a:hover {
+    text-decoration: underline;
+}
+
+/* --- Стили для страницы контактов --- */
+.contact-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form input[type="tel"],
+.contact-form textarea {
+    width: 95%; /* Почти на всю ширину ячейки */
+    padding: 8px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    font-size: 13px;
+}
+.contact-form textarea {
+    height: 120px;
+    resize: vertical;
+}
+.contact-form button[type="submit"] {
+    background-color: #ff8000;
+    color: white;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+.contact-form button[type="submit"]:hover {
+    background-color: #cc6600;
+}
+.contact-info p {
+    margin: 5px 0;
+    line-height: 1.7;
+    font-size: 14px;
+}
+.contact-info strong {
+    color: #333;
+}
+.map-container {
+    margin-top: 20px;
+    border: 1px solid #ccc;
+    padding: 4px;
+}
+.map-container iframe {
+    width: 100%;
+    height: 350px;
+    border: none;
+    display: block; /* Убрать возможный нижний отступ */
+}
+hr {
+    border: 0;
+    height: 1px;
+    background-color: #ddd;
+    margin: 20px 0;
+}

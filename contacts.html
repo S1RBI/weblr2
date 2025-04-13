@@ -1,0 +1,96 @@
+      
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Контакты - Столплит</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+
+<table class="layout-table header-table" cellpadding="0" cellspacing="0"><tr><td class="logo-cell"><a href="index.html"><img src="img/logo.png" alt="Логотип Столплит"></a></td><td class="title-cell"><h1>Столплит Мебель</h1></td><td class="login-cell"><table cellpadding="0" cellspacing="0" width="100%"><tr><td><input type="text" value="логин"></td></tr><tr><td><input type="password" value="пароль"></td></tr><tr><td><input type="submit" value="Войти"> <a href="#">Регистрация</a></td></tr></table></td></tr></table>
+<table class="layout-table nav-table" cellpadding="0" cellspacing="0"><tr><td><a href="index.html">Главная</a></td><td><a href="catalog.html">Каталог</a></td><td><a href="contacts.html" class="active">Контакты</a></td><td class="search-cell"><input type="text" value="поиск"> <input type="button" value="Искать"></td></tr></table>
+
+<table class="layout-table content-table" cellpadding="0" cellspacing="0">
+    <tr>
+        <td class="sidebar-left"><a href="index.html">Главная</a><br><a href="catalog.html">Каталог</a><br><a href="contacts.html">Контакты</a><br><a href="#map">Карта проезда</a></td>
+
+        <td class="main-content-cell">
+            <h2>Напишите нам</h2>
+            <hr>
+            <p>Если у вас есть вопросы или предложения, пожалуйста, заполните форму ниже:</p>
+
+            <form action="#" method="post" class="contact-form">
+                <div>
+                    <label for="name">Имя:</label>
+                    <input type="text" id="name" name="user_name" required placeholder="Введите ваше имя">
+                </div>
+                <div>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="user_email" required placeholder="example@domain.com">
+                </div>
+                 <div>
+                    <label for="phone">Телефон (необязательно):</label>
+                    <input type="tel" id="phone" name="user_phone" placeholder="+7 (XXX) XXX-XX-XX">
+                </div>
+                <div>
+                    <label for="subject">Тема:</label>
+                    <input type="text" id="subject" name="subject" required placeholder="Тема вашего сообщения">
+                </div>
+                <div>
+                    <label for="message">Сообщение:</label>
+                    <textarea id="message" name="user_message" required placeholder="Введите текст вашего сообщения..."></textarea>
+                </div>
+                <div> 
+                    <label>Причина обращения:</label>
+                    <select name="reason" style="padding: 8px; margin-bottom: 12px;">
+                        <option value="question">Вопрос по товару</option>
+                        <option value="order">Вопрос по заказу</option>
+                        <option value="delivery">Доставка</option>
+                        <option value="other">Другое</option>
+                    </select>
+                </div>
+                <div>
+                     <label style="font-weight: normal; font-size: 12px;">
+                        <input type="checkbox" name="agreement" required> Я согласен на обработку персональных данных
+                     </label>
+                </div>
+                <br>
+                <div>
+                    <button type="submit">Отправить сообщение</button>
+                </div>
+            </form>
+
+            <hr>
+
+            <h2>Адрес и контакты</h2>
+            <div class="contact-info">
+                <p><strong>Телефон:</strong> <a href="tel:+78001007575">8 (800) 100-75-75</a> (Звонок по России бесплатный)</p>
+                <p><strong>Email:</strong> <a href="mailto:info@stolplit.ru">info@stolplit.ru</a></p>
+                <p><strong>Адрес центрального офиса:</strong> г. Сходня, Московская обл., ул. Некрасова, 2 (Пример реального адреса Столплит)</p>
+                 <p><strong>Адрес ближайшего магазина:</strong> г. Москва, ул. Примерная, д. 10 (Добавьте реальный адрес)</p>
+                <p><strong>Режим работы:</strong> Пн-Вс с 10:00 до 21:00</p>
+             </div>
+
+            <hr>
+
+            <h2 id="map">Мы на карте</h2>
+             <div class="map-container">
+                
+                <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3A138c07fd1ae9a532ff14a51beabe47916e196f98bcd7337cb84e48c21f1a5714&amp;source=constructor" width="500" height="400" frameborder="0"></iframe>
+             </div>
+
+        </td> <!-- Закрытие центральной ячейки -->
+
+        <!-- Правая колонка (копируем) -->
+        <td class="sidebar-right"><a href="#"><img src="img/banner1.jpg" alt="Баннер 1"></a><a href="#"><img src="img/banner2.jpg" alt="Баннер 2"></a><a href="#"><img src="img/banner3.jpg" alt="Баннер 3"></a>(баннеры)</td>
+    </tr>
+    <!-- Строка подвала (копируем) -->
+    <tr><td colspan="3" class="footer-cell">© 2025 Столплит. Все права защищены.</td></tr>
+</table>
+
+</body>
+</html>
+
+    
