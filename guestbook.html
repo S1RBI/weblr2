@@ -1,44 +1,101 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-    <title>Guestbook</title>
+    <meta charset="UTF-8">
+    <title>Столплит - Отзывы</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-    <h2>Guestbook</h2>
+<!-- Таблица Шапки -->
+<table class="layout-table header-table" cellpadding="0" cellspacing="0">
+    <tr>
+        <td class="logo-cell">
+            <a href="index.html"><img src="img/logo.png" alt="Логотип Столплит"></a>
+        </td>
+        <td class="title-cell"><h1>Столплит Мебель</h1></td>
+        <td class="login-cell">
+            <a href="login.html">Войти</a>&nbsp;&nbsp;<a href="register.html">Зарегистрироваться</a>
+        </td>
 
-    <form action="submit_guestbook.php" method="post">
+    </tr>
+</table>
 
-        <label>Rating:</label><br>
-        <input type="radio" name="rating" value="Excellent"> Excellent<br>
-        <input type="radio" name="rating" value="Good"> Good<br>
-        <input type="radio" name="rating" value="Average"> Average<br>
-        <input type="radio" name="rating" value="Poor"> Poor<br><br>
+<!-- Таблица Навигации -->
+<table class="layout-table nav-table" cellpadding="0" cellspacing="0">
+    <tr>
+        <td><a href="index.html">Главная</a></td>
+        <td><a href="catalog.html">Каталог</a></td>
+        <td><a href="contacts.html">Контакты</a></td>
+        <td class="search-cell">
+            <input type="text" value="поиск"> <input type="button" value="Искать">
+        </td>
+    </tr>
+</table>
 
-        <label>Would you recommend this product?</label>
-        <input type="checkbox" name="recommend"><br><br>
+<!-- Таблица Основного контента -->
+<table class="layout-table content-table" cellpadding="0" cellspacing="0">
+    <tr>
+        <!-- Левая колонка -->
+        <td class="sidebar-left">
+            <a href="index.html">Главная</a><br>
+            <a href="#">О нас</a><br>
+            <a href="#">История</a><br>
+            <a href="#">Сотрудники</a><br>
+            <a href="catalog.html">Каталог</a><br>
+            <a href="contacts.html">Контакты</a>
+        </td>
 
-        <label>Your Name:</label><br>
-        <input type="text" name="name"><br><br>
+        <!-- Центральная колонка -->
+        <td class="main-content-cell">
+            <h1>Отзывы</h1>
 
-        <label>Comments:</label><br>
-        <textarea name="comments" rows="5" cols="40"></textarea><br><br>
+            <form action="#" method="post" class="contact-form">  <!-- Используем contact-form для стилизации -->
+                <label>Ваша оценка:</label><br>
+                <input type="radio" name="rating" value="excellent"> Отлично
+                <input type="radio" name="rating" value="good"> Хорошо
+                <input type="radio" name="rating" value="average"> Средне
+                <input type="radio" name="rating" value="poor"> Плохо<br><br>
 
-        <label>Age Range:</label><br>
-        <select name="age_range">
-            <option value="Under 18">Under 18</option>
-            <option value="18-25">18-25</option>
-            <option value="26-35">26-35</option>
-            <option value="36-50">36-50</option>
-            <option value="50+">50+</option>
-        </select><br><br>
+                <input type="checkbox" name="recommend" value="yes"> Рекомендую этот сайт<br><br>
 
-        <label>Suggestions:</label><br>
-        <textarea name="suggestions" rows="3" cols="40" wrap="hard" style="overflow-y: scroll;"></textarea><br><br>
+                <label for="name">Ваше имя:</label>
+                <input type="text" id="name" name="name"><br>
 
-        <input type="submit" value="Submit">
+                <label for="comment">Комментарий:</label>
+                <textarea id="comment" name="comment"></textarea><br>
 
-    </form>
+                <label for="age">Возрастная группа:</label>
+                <select id="age" name="age">
+                    <option value="under18">До 18</option>
+                    <option value="18-25">18-25</option>
+                    <option value="26-35">26-35</option>
+                    <option value="36-50">36-50</option>
+                    <option value="50+">50+</option>
+                </select><br><br>
+
+                <label for="suggestions">Предложения:</label>
+                <textarea id="suggestions" name="suggestions" rows="4"></textarea><br>
+
+                <button type="submit">Отправить</button>
+            </form>
+        </td>
+
+        <!-- Правая колонка -->
+        <td class="sidebar-right">
+            <a href="#"><img src="img/banner1.jpg" alt="Рекламный баннер 1"></a>
+            <a href="#"><img src="img/banner2.jpg" alt="Рекламный баннер 2"></a>
+            <a href="#"><img src="img/banner3.jpg" alt="Рекламный баннер 3"></a>
+        </td>
+    </tr>
+
+    <!-- Строка подвала -->
+    <tr>
+        <td colspan="3" class="footer-cell">
+            &copy; 2025 Столплит. Все права защищены.
+        </td>
+    </tr>
+</table>
 
 </body>
 </html>

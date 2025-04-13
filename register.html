@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация - Столплит</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Дополнительные стили для формы регистрации */
+        .registration-form {
+            width: 300px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .registration-form input[type="text"],
+        .registration-form input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box; /* Чтобы padding не увеличивал ширину */
+        }
+        .registration-form input[type="submit"] {
+            background-color: #ff8000;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            display: block; /* Делаем кнопку блочным элементом */
+            margin: 0 auto; /* Центрируем кнопку */
+        }
+        .registration-form input[type="submit"]:hover {
+            background-color: #cc6600;
+        }
+        /* Стили для прижатия подвала */
+        html, body {
+            height: 100%;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+        .content-table {
+            flex: 1 0 auto; /* Основной контент занимает все доступное пространство */
+        }
+        .footer-cell {
+            flex-shrink: 0; /* Подвал не сжимается */
+        }
+    </style>
+</head>
+<body>
+
+<!-- Таблица Шапки -->
+<table class="layout-table header-table" cellpadding="0" cellspacing="0">
+    <tr>
+        <td class="logo-cell">
+            <a href="index.html"><img src="img/logo.png" alt="Логотип Столплит"></a>
+        </td>
+        <td class="title-cell"><h1>Столплит Мебель</h1></td>
+        <td class="login-cell">
+            <!--  Здесь можно добавить информацию о входе, если нужно -->
+        </td>
+    </tr>
+</table>
+
+<!-- Таблица Навигации -->
+<table class="layout-table nav-table" cellpadding="0" cellspacing="0">
+    <tr>
+        <td><a href="index.html">Главная</a></td>
+        <td><a href="catalog.html">Каталог</a></td>
+        <td><a href="contacts.html">Контакты</a></td>
+        <td class="search-cell">
+            <input type="text" value="поиск"> <input type="button" value="Искать">
+        </td>
+    </tr>
+</table>
+
+<!-- Таблица Основного контента -->
+<table class="layout-table content-table" cellpadding="0" cellspacing="0">
+    <tr>
+        <!-- Левая колонка (может быть пустой или содержать дополнительное меню) -->
+        <td class="sidebar-left">
+            <!--  Здесь может быть дополнительное меню или пусто -->
+        </td>
+
+        <!-- Центральная колонка -->
+        <td class="main-content-cell">
+            <h1>Регистрация</h1>
+            <div class="registration-form">
+                <form action="#" method="post">  <!-- Замените # на обработчик формы -->
+                    <input type="text" name="username" placeholder="Имя пользователя (логин)" required>
+                    <input type="password" name="password" placeholder="Пароль" required>
+                    <input type="submit" value="Зарегистрироваться">
+                    <p>Уже есть аккаунт? <a href="login.html">Войти</a></p>
+                </form>
+            </div>
+        </td>
+
+        <!-- Правая колонка (может быть пустой или содержать баннеры) -->
+        <td class="sidebar-right">
+            <!-- Здесь могут быть баннеры или другая информация -->
+        </td>
+    </tr>
+    <!-- Строка подвала -->
+    <tr>
+        <td colspan="3" class="footer-cell">
+            &copy; 2025 Столплит. Все права защищены.
+        </td>
+    </tr>
+</table>
+
+</body>
+</html>
