@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Guestbook</title>
+</head>
+<body>
+
+    <h2>Guestbook</h2>
+
+    <form action="submit_guestbook.php" method="post">
+
+        <label>Rating:</label><br>
+        <input type="radio" name="rating" value="Excellent"> Excellent<br>
+        <input type="radio" name="rating" value="Good"> Good<br>
+        <input type="radio" name="rating" value="Average"> Average<br>
+        <input type="radio" name="rating" value="Poor"> Poor<br><br>
+
+        <label>Would you recommend this product?</label>
+        <input type="checkbox" name="recommend"><br><br>
+
+        <label>Your Name:</label><br>
+        <input type="text" name="name"><br><br>
+
+        <label>Comments:</label><br>
+        <textarea name="comments" rows="5" cols="40"></textarea><br><br>
+
+        <label>Age Range:</label><br>
+        <select name="age_range">
+            <option value="Under 18">Under 18</option>
+            <option value="18-25">18-25</option>
+            <option value="26-35">26-35</option>
+            <option value="36-50">36-50</option>
+            <option value="50+">50+</option>
+        </select><br><br>
+
+        <label>Suggestions:</label><br>
+        <textarea name="suggestions" rows="3" cols="40" wrap="hard" style="overflow-y: scroll;"></textarea><br><br>
+
+        <input type="submit" value="Submit">
+
+    </form>
+
+</body>
+</html>

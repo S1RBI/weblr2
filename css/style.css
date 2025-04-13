@@ -3,7 +3,7 @@ body {
     font-size: 14px;
     margin: 0;
     padding: 0;
-    background-color: #eee; 
+    background-color: #f8f8f8; 
 }
 
 table.layout-table {
@@ -88,17 +88,23 @@ table.layout-table {
     padding: 8px 5px; /* Отступы в ячейках навигации */
 }
 .nav-table a {
-    color: #444; /* Dark text */
+    color: #333;
     text-decoration: none;
-    font-weight: bold;
+    font-weight: 500;
+    font-size: 16px;
     padding: 5px 10px; /* Отступы для самой ссылки */
+}
+.nav-table ul {
+    list-style: none; /* Убираем маркеры списка */
+    padding: 0;
+    margin: 0;
 }
 .nav-table a:hover,
 .nav-table a.active { /* Стиль активного пункта */
     color: white;
     background-color: #ff8000; /* Darker orange */
     border-radius: 4px;
-}
+}  
 .search-cell {
     text-align: right;
 }
@@ -129,6 +135,7 @@ table.layout-table {
     text-align: center;
 }
 .sidebar-left a {
+    list-style: none;
     color: white;
     text-decoration: none;
     display: block; /* Ссылки друг под другом */
@@ -153,6 +160,22 @@ table.layout-table {
     padding-bottom: 5px;
     margin-bottom: 15px;
 }
+.main-content-cell .short-description,
+.main-content-cell .characteristics,
+.main-content-cell .detailed-description{
+    color: black;
+    font-size: 18px;
+    font-weight: 400;
+    background-color: #eaeaea;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+    text-align: center;
+    margin-top: 0;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
 .main-content-cell h3 {
     color: #cc6600; /* Darker orange */
     margin-top: 15px;
@@ -161,6 +184,23 @@ table.layout-table {
 .main-content-cell p {
     line-height: 1.6;
     margin-bottom: 15px;
+    text-align: justify; /* Выравнивание текста по ширине */
+}
+.main-content-cell .short-description-text {
+    color: #707070;
+    font-size: 14px;
+    font-style: italic;
+    line-height: 16px;
+    margin-bottom: 15px;
+    text-align: justify; /* Выравнивание текста по ширине */
+}
+.main-content-cell .detailed-description-text {
+    color: #484343;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    margin-bottom: 15px;
+    text-align: left; /* Выравнивание текста по ширине */
     text-align: justify; /* Выравнивание текста по ширине */
 }
 .main-content-cell img.align-left { /* Картинка с обтеканием */
@@ -272,13 +312,18 @@ table.layout-table {
     font-weight: bold;
     color: #555;
 }
+.contact-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
 .contact-form input[type="text"],
 .contact-form input[type="email"],
 .contact-form input[type="tel"],
 .contact-form textarea {
-    width: 95%; /* Почти на всю ширину ячейки */
-    padding: 8px;
-    margin-bottom: 12px;
+    width: 300px;
+    height: 40px;
     border: 1px solid #ccc;
     font-size: 13px;
 }
