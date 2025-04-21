@@ -1,25 +1,44 @@
-      
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <title>Каталог - Столплит</title>
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        .product-card.hidden {
+            display: none;
+        }
+
+        #category-filters a.filter-active {
+            font-weight: bold;
+            color: #cc0000;
+        }
+      
+        #category-filters {
+            margin: 0;
+            padding: 0;
+
+        }
+
+        
+         #category-filters a {
+            display: inline-block; 
+            margin-bottom: 5px;
+         }
+
+    </style>
 </head>
 <body>
-
 
 <table class="layout-table header-table" cellpadding="0" cellspacing="0">
     <tr>
         <td class="logo-cell"><a href="index.html"><img src="img/logo.png" alt="Логотип Столплит"></a></td>
         <td class="title-cell"><h1>Столплит Мебель</h1></td>
         <td class="login-cell">
-            <a href="login.html">Войти</a>&nbsp;&nbsp;<a href="register.html">Зарегистрироваться</a>
+            <a href="login.html">Войти</a>  <a href="register.html">Зарегистрироваться</a>
         </td>
-
     </tr>
 </table>
-
 
 <table class="layout-table nav-table" cellpadding="0" cellspacing="0">
     <tr>
@@ -27,32 +46,39 @@
         <td><a href="catalog.html" class="active">Каталог</a></td>
         <td><a href="contacts.html">Контакты</a></td>
         <td class="search-cell">
-            <input type="text" value="поиск"> <input type="button" value="Искать">
+            <form action="search.php" method="GET">
+                <input type="text" name="search_query" placeholder="поиск товара...">
+                <input type="submit" value="Искать">
+            </form>
         </td>
     </tr>
 </table>
 
-<!-- Таблица Основного контента -->
 <table class="layout-table content-table" cellpadding="0" cellspacing="0">
     <tr>
 
         <td class="sidebar-left">
-            <a href="index.html">Главная</a><br>
-            <a href="catalog.html">Каталог</a><br> <!-- Активная секция -->
-            <a href="#">Диваны</a><br> <!-- Подразделы каталога -->
-            <a href="#">Шкафы</a><br>
-            <a href="#">Кровати</a><br>
-            <a href="#">Столы</a><br>
-            <a href="contacts.html">Контакты</a>
+            
+            <nav id="category-filters">
+                <a href="index.html">Главная</a><br>
+                <a href="#" data-filter="all" class="filter-active"><b>Каталог</b></a><br>
+                <a href="#" data-filter="sofa">Диваны</a><br>
+                <a href="#" data-filter="wardrobe">Шкафы</a><br>
+                <a href="#" data-filter="bed">Кровати</a><br>
+                <a href="#" data-filter="table">Столы</a><br>
+                <a href="contacts.html">Контакты</a>
+            <a href="guestbook.html">Отзыв</a>
+            </nav>
+            
         </td>
 
         <td class="main-content-cell">
             <h2>Каталог товаров</h2>
             <hr>
 
-            <div class="catalog-grid">
+            <div class="catalog-grid" id="catalog-grid">
 
-                <div class="product-card">
+                <div class="product-card" data-category="sofa">
                     <a href="product1.html">
                         <img src="img/sofa_thumb.jpg" alt="Диван Челси">
                     </a>
@@ -60,40 +86,85 @@
                     <a href="product1.html">Подробнее...</a>
                 </div>
 
-                <div class="product-card">
-                    <a href="product2.html">
-                        <img src="img/wardrobe_thumb.jpg" alt="Шкаф-купе Бася">
-                    </a>
-                    <h4>Шкаф-купе "Бася"</h4>
-                    <a href="product2.html">Подробнее...</a>
-                </div>
-
-
-                 <div class="product-card">
+                 <div class="product-card" data-category="bed">
                     <a href="#">
                         <img src="img/1.jpg" alt="Кровать Венеция">
                     </a>
                     <h4>Кровать "Венеция"</h4>
                     <a href="#">Подробнее...</a>
                 </div>
-                 <div class="product-card">
-                    <a href="#"> 
+                 <div class="product-card" data-category="table">
+                    <a href="#">
                         <img src="img/2.jpg" alt="Стол Компьютерный">
                     </a>
                     <h4>Стол "Компьютерный"</h4>
                     <a href="#">Подробнее...</a>
                 </div>
+                <div class="product-card" data-category="sofa">
+                    <a href="sofa_atlanta.html">
+                        <img src="img/sofa_atlanta_thumb.jpg" alt="Диван угловой Атланта">
+                    </a>
+                    <h4>Диван угловой "Атланта"</h4>
+                    <a href="sofa_atlanta.html">Подробнее...</a>
+                </div>
+                <div class="product-card" data-category="sofa">
+                    <a href="sofa_bristol.html">
+                        <img src="img/sofa_bristol_thumb.jpg" alt="Диван прямой Бристоль">
+                    </a>
+                    <h4>Диван прямой "Бристоль"</h4>
+                    <a href="sofa_bristol.html">Подробнее...</a>
+                </div>
+                <div class="product-card" data-category="wardrobe">
+                    <a href="product2.html">
+                        <img src="img/wardrobe_thumb.jpg" alt="Шкаф-купе Бася">
+                    </a>
+                    <h4>Шкаф-купе "Бася"</h4>
+                    <a href="product2.html">Подробнее...</a>
+                </div>
+                <div class="product-card" data-category="wardrobe">
+                    <a href="wardrobe_verona.html">
+                        <img src="img/wardrobe_verona_thumb.jpg" alt="Шкаф распашной Верона">
+                    </a>
+                    <h4>Шкаф распашной "Верона"</h4>
+                    <a href="wardrobe_verona.html">Подробнее...</a>
+                </div>
+                <div class="product-card" data-category="wardrobe">
+                    <a href="wardrobe_loft.html">
+                        <img src="img/wardrobe_loft_thumb.jpg" alt="Шкаф-купе Лофт">
+                    </a>
+                    <h4>Шкаф-купе "Лофт"</h4>
+                    <a href="wardrobe_loft.html">Подробнее...</a>
+                </div>
+                 <div class="product-card" data-category="bed">
+                    <a href="bed_sofia.html">
+                        <img src="img/bed_sofia_thumb.jpg" alt="Кровать двуспальная София">
+                    </a>
+                    <h4>Кровать двуспальная "София"</h4>
+                    <a href="bed_sofia.html">Подробнее...</a>
+                </div>
+                 <div class="product-card" data-category="bed">
+                    <a href="bed_oskar.html">
+                        <img src="img/bed_oskar_thumb.jpg" alt="Кровать Оскар с подъемным механизмом">
+                    </a>
+                    <h4>Кровать "Оскар" (подъемн.)</h4>
+                    <a href="bed_oskar.html">Подробнее...</a>
+                </div>
+                 <div class="product-card" data-category="bed">
+                    <a href="bed_junior.html">
+                        <img src="img/bed_junior_thumb.jpg" alt="Кровать односпальная Юниор">
+                    </a>
+                    <h4>Кровать односпальная "Юниор"</h4>
+                    <a href="bed_junior.html">Подробнее...</a>
+                </div>
+                <!-- / Карточки товаров -->
 
-            </div>
-
-        </td> 
-
+            </div> <!-- конец catalog-grid -->
+        </td>
 
         <td class="sidebar-right">
              <a href="#"><img src="img/banner1.jpg" alt="Рекламный баннер 1"></a>
              <a href="#"><img src="img/banner2.jpg" alt="Рекламный баннер 2"></a>
              <a href="#"><img src="img/banner3.jpg" alt="Рекламный баннер 3"></a>
-
         </td>
     </tr>
 
@@ -104,7 +175,46 @@
     </tr>
 </table>
 
+<!-- JAVASCRIPT ОСТАЕТСЯ ПРЕЖНИМ -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const filterContainer = document.getElementById('category-filters'); // Теперь ищет <nav> по ID
+        const productGrid = document.getElementById('catalog-grid');
+        const productCards = productGrid.querySelectorAll('.product-card');
+        const filterLinks = filterContainer.querySelectorAll('a[data-filter]'); // Ищет ссылки внутри <nav>
+
+        filterContainer.addEventListener('click', function(event) {
+            const targetLink = event.target.closest('a[data-filter]');
+            if (!targetLink) {
+                return;
+            }
+            event.preventDefault();
+            const filterValue = targetLink.getAttribute('data-filter');
+
+            filterLinks.forEach(link => link.classList.remove('filter-active'));
+            targetLink.classList.add('filter-active');
+
+            // Управление жирностью для "Каталог"
+             const catalogLink = filterContainer.querySelector('a[data-filter="all"]');
+             if (catalogLink && catalogLink.querySelector('b')) {
+                 catalogLink.innerHTML = catalogLink.querySelector('b').innerHTML; // Убираем <b>
+             }
+             if (targetLink.getAttribute('data-filter') === 'all') {
+                 targetLink.innerHTML = `<b>${targetLink.innerHTML}</b>`; // Добавляем <b>
+             }
+
+
+            productCards.forEach(card => {
+                const cardCategory = card.getAttribute('data-category');
+                if (filterValue === 'all' || cardCategory === filterValue) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        });
+    });
+</script>
+
 </body>
 </html>
-
-    

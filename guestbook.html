@@ -28,7 +28,10 @@
         <td><a href="catalog.html">Каталог</a></td>
         <td><a href="contacts.html">Контакты</a></td>
         <td class="search-cell">
-            <input type="text" value="поиск"> <input type="button" value="Искать">
+            <form action="http://localhost/search.php" method="GET">
+                <input type="text" name="search_query" placeholder="поиск..."> 
+                <input type="submit" value="Искать">
+            </form>
         </td>
     </tr>
 </table>

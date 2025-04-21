@@ -159,17 +159,15 @@ table.layout-table {
     border-bottom: 1px solid #eee;
     padding-bottom: 5px;
     margin-bottom: 15px;
-}
-.main-content-cell .short-description,
-.main-content-cell .characteristics,
-.main-content-cell .detailed-description{
+}.main-content-cell .short-description, .main-content-cell .characteristics, .main-content-cell .detailed-description {
     color: black;
     font-size: 18px;
     font-weight: 400;
     background-color: #eaeaea;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 5px;
-    margin-bottom: 15px;
+     border-bottom: 1px solid #eee;
+     padding-bottom: 5px;
+     margin-bottom: 15px;
+    
     text-align: center;
     margin-top: 0;
     border-bottom: 1px solid #eee;
@@ -191,7 +189,7 @@ table.layout-table {
     font-size: 14px;
     font-style: italic;
     line-height: 16px;
-    margin-bottom: 15px;
+     margin-bottom: 15px;
     text-align: justify; /* Выравнивание текста по ширине */
 }
 .main-content-cell .detailed-description-text {
@@ -199,9 +197,17 @@ table.layout-table {
     font-size: 16px;
     font-weight: 400;
     line-height: 24px;
-    margin-bottom: 15px;
-    text-align: left; /* Выравнивание текста по ширине */
-    text-align: justify; /* Выравнивание текста по ширине */
+     margin-bottom: 15px;
+     text-align: left;
+}
+.main-content-cell ul.product-specs-list {
+    list-style-type: none; /* Убираем стандартные маркеры */
+     padding-left: 0; /* Убираем стандартный отступ */
+}
+.main-content-cell ul.product-specs-list li {
+     margin-bottom: 10px;
+     background-image: url('img/placeholder_thumb.jpg'); /* Путь к вашему изображению */
+    background-repeat: no-repeat;
 }
 .main-content-cell img.align-left { /* Картинка с обтеканием */
     float: right;

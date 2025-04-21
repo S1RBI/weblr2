@@ -30,7 +30,10 @@
         <td><a href="contacts.html">Контакты</a></td>
         <!-- Можно добавить еще пункты, если нужно -->
         <td class="search-cell">
-            <input type="text" value="поиск"> <input type="button" value="Искать">
+            <form action="http://localhost/search.php" method="GET">
+                <input type="text" name="search_query" placeholder="поиск..."> 
+                <input type="submit" value="Искать">
+            </form>
         </td>
     </tr>
 </table>
