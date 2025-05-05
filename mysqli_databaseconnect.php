@@ -11,7 +11,6 @@ $conn = mysqli_connect($servername, $username, $password, $database);
 if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
 }
-echo "Connected successfully using MySQLi";
-
-mysqli_close($conn);
+// Соединение установлено успешно, дальнейший код в других скриптах может выполняться.
+// НЕ закрываем соединение здесь, его должен закрыть основной скрипт после всех операций с БД.
 ?>
