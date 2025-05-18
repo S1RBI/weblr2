@@ -24,7 +24,7 @@
 <table class="layout-table nav-table" cellpadding="0" cellspacing="0">
     <tr>
         <td><a href="index.html" class="active">Главная</a></td>
-        <td><a href="catalog.html">Каталог</a></td>
+        <td><a href="catalog.php">Каталог</a></td>
         <td><a href="contacts.html">Контакты</a></td>
         <!-- Можно добавить еще пункты, если нужно -->
         <td class="search-cell">
@@ -45,7 +45,7 @@
             <a href="#about">О нас</a><br>
             <a href="#history">История</a><br>
             <a href="#team">Сотрудники</a><br>
-            <a href="catalog.html">Каталог</a><br>
+            <a href="catalog.php">Каталог</a><br>
             <a href="contacts.html">Контакты</a>
         </td>
 

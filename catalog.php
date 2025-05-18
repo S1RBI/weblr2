@@ -1,41 +1,67 @@
 <?php
+require_once 'auth_check.php'; // Включаем скрипт проверки авторизации
 require_once 'mysqli_databaseconnect.php';
 
 $products = [];
 $filter_category = isset($_GET['category']) ? $_GET['category'] : 'all';
+$sort_by = isset($_GET['sort']) ? $_GET['sort'] : ''; // Параметр сортировки
 
 // Проверяем соединение
-if ($conn->connect_error) {
-    die("Ошибка подключения: " . $conn->connect_error);
-}
+// Соединение теперь устанавливается в auth_check.php, используем глобальную переменную $conn
+// if ($conn->connect_error) {
+//     die("Ошибка подключения: " . $conn->connect_error);
+// }
+
 
 // Формируем SQL запрос
-$sql = "SELECT id, name, alias, short_description, price, image FROM product";
+// Обновлен запрос для получения основного изображения из product_images
+$sql = "SELECT p.id, p.name, p.alias, p.short_description, p.price,
+               (SELECT image FROM product_images WHERE product_id = p.id ORDER BY id ASC LIMIT 1) AS main_image
+        FROM product p";
+
 $where_clauses = [];
 
 if ($filter_category !== 'all') {
-    // Пример фильтрации по ключевым словам, предполагая, что они содержат категорию
-    // Это не идеальное решение. Лучше использовать отдельное поле для категории.
-    // Вам может потребоваться настроить это условие в зависимости от ваших данных.
+    // Пример фильтрации по ключевым словам
     $safe_category = mysqli_real_escape_string($conn, $filter_category);
-    $where_clauses[] = "meta_keywords LIKE '%" . $safe_category . "%'";
+    // Учитываем регистр для корректной фильтрации, если meta_keywords в нижнем регистре
+    $where_clauses[] = "LOWER(p.meta_keywords) LIKE '%" . strtolower($safe_category) . "%'";
 }
 
 if (!empty($where_clauses)) {
     $sql .= " WHERE " . implode(" AND ", $where_clauses);
 }
 
-// TODO: Добавить логику сортировки здесь
-
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
-        $products[] = $row;
+// Добавляем логику сортировки
+if (!empty($sort_by)) {
+    // Проверяем допустимые столбцы для сортировки
+    $allowed_sort_columns = ['name', 'price'];
+    if (in_array($sort_by, $allowed_sort_columns)) {
+        $sql .= " ORDER BY p." . $sort_by;
+        // Можно добавить ASC/DESC, если нужно
+         $sql .= " ASC"; // Или DESC
     }
 }
 
-$conn->close();
+
+$result = $conn->query($sql);
+
+if ($result) { // Проверяем, успешно ли выполнен запрос
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            $products[] = $row;
+        }
+    }
+} else {
+    // Обработка ошибки выполнения запроса
+    echo "Ошибка выполнения запроса: " . $conn->error;
+}
+
+
+// Соединение закрывается в auth_check.php после всех операций,
+// или будет закрыто автоматически в конце скрипта, если не использовать персистентное соединение.
+// $conn->close();
+
 ?>
 
 <!DOCTYPE html>
@@ -65,24 +91,36 @@ $conn->close();
             display: inline-block; 
             margin-bottom: 5px;
          }
-
+         .sort-form {
+             margin-bottom: 20px;
+         }
+         .sort-form label {
+             margin-right: 10px;
+         }
     </style>
 </head>
 <body>
 
+<!-- Таблица Шапки -->
 <table class="layout-table header-table" cellpadding="0" cellspacing="0">
     <tr>
-        <td class="logo-cell"><a href="index.html"><img src="img/logo.png" alt="Логотип Столплит"></a></td>
+        <td class="logo-cell"><a href="index.php"><img src="img/logo.png" alt="Логотип Столплит"></a></td>
         <td class="title-cell"><h1>Столплит Мебель</h1></td>
         <td class="login-cell">
-            <a href="login.html">Войти</a>&nbsp;&nbsp;<a href="register.html">Зарегистрироваться</a>
+            <?php if (isset($logged_in_user)): ?>
+                Привет, <?php echo htmlspecialchars($logged_in_user['username']); ?>!
+                <a href="logout.php">Выйти</a>
+            <?php else: ?>
+                <a href="login.php">Войти</a>&nbsp;&nbsp;<a href="register.php">Зарегистрироваться</a>
+            <?php endif; ?>
         </td>
     </tr>
 </table>
 
+<!-- Таблица Навигации -->
 <table class="layout-table nav-table" cellpadding="0" cellspacing="0">
     <tr>
-        <td><a href="index.html">Главная</a></td>
+        <td><a href="index.php">Главная</a></td>
         <td><a href="catalog.php" class="active">Каталог</a></td>
         <td><a href="contacts.html">Контакты</a></td>
         <td class="search-cell">
@@ -100,12 +138,12 @@ $conn->close();
         <td class="sidebar-left">
             
             <nav id="category-filters">
-                <a href="index.html">Главная</a><br>
+                <a href="index.php">Главная</a><br>
                 <a href="catalog.php?category=all" class="<?php echo ($filter_category === 'all') ? 'filter-active' : ''; ?>"><b>Каталог</b></a><br>
-                <a href="catalog.php?category=sofa" class="<?php echo ($filter_category === 'sofa') ? 'filter-active' : ''; ?>">Диваны</a><br>
-                <a href="catalog.php?category=wardrobe" class="<?php echo ($filter_category === 'wardrobe') ? 'filter-active' : ''; ?>">Шкафы</a><br>
-                <a href="catalog.php?category=bed" class="<?php echo ($filter_category === 'bed') ? 'filter-active' : ''; ?>">Кровати</a><br>
-                <a href="catalog.php?category=table" class="<?php echo ($filter_category === 'table') ? 'filter-active' : ''; ?>">Столы</a><br>
+                <a href="catalog.php?category=Диваны" class="<?php echo ($filter_category === 'Диваны') ? 'filter-active' : ''; ?>">Диваны</a><br>
+                <a href="catalog.php?category=Шкафы" class="<?php echo ($filter_category === 'Шкафы') ? 'filter-active' : ''; ?>">Шкафы</a><br>
+                <a href="catalog.php?category=Кровати" class="<?php echo ($filter_category === 'Кровати') ? 'filter-active' : ''; ?>">Кровати</a><br>
+                <a href="catalog.php?category=Столы" class="<?php echo ($filter_category === 'Столы') ? 'filter-active' : ''; ?>">Столы</a><br>
                 <a href="contacts.html">Контакты</a>
             <a href="guestbook.html">Отзыв</a>
             </nav>
@@ -116,24 +154,44 @@ $conn->close();
             <h2>Каталог товаров</h2>
             <hr>
 
+            <form action="catalog.php" method="GET" class="sort-form">
+                 <input type="hidden" name="category" value="<?php echo htmlspecialchars($filter_category); ?>"> <!-- Сохраняем текущий фильтр -->
+                <label for="sort">Сортировать по:</label>
+                <select name="sort" id="sort">
+                    <option value="" <?php echo ($sort_by === '') ? 'selected' : ''; ?>>-- Выберите --</option>
+                    <option value="name" <?php echo ($sort_by === 'name') ? 'selected' : ''; ?>>Названию</option>
+                    <option value="price" <?php echo ($sort_by === 'price') ? 'selected' : ''; ?>>Цене</option>
+                </select>
+                <button type="submit">Сортировать</button>
+            </form>
+
             <div class="catalog-grid" id="catalog-grid">
 
-                <?php if (!empty($products)): ?>
-                    <?php foreach ($products as $product): ?>
+                <?php if (!empty($products)):
+                    ?>
+                    <?php foreach ($products as $product):
+                         // Используем 'main_image' из запроса
+                         $image_path = !empty($product['main_image']) ? htmlspecialchars($product['main_image']) : 'img/placeholder_thumb.jpg';
+                         ?>
                         <div class="product-card" data-category="<?php // Здесь можно добавить категорию, если она будет в таблице ?>">
                             <a href="product_detail.php?alias=<?php echo htmlspecialchars($product['alias']); ?>">
-                                <img src="<?php echo htmlspecialchars($product['image']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
+                                <img src="<?php echo $image_path; ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
                             </a>
                             <h4><?php echo htmlspecialchars($product['name']); ?></h4>
-                            <?php if ($product['price'] > 0): ?>
+                             <?php if ($product['price'] > 0):
+                                  ?>
                                 <p>Цена: <?php echo htmlspecialchars($product['price']); ?> руб.</p>
-                            <?php endif; ?>
+                            <?php endif;
+                             ?>
                             <a href="product_detail.php?alias=<?php echo htmlspecialchars($product['alias']); ?>">Подробнее...</a>
                         </div>
-                    <?php endforeach; ?>
-                <?php else: ?>
+                    <?php endforeach;
+                 ?>
+                <?php else:
+                     ?>
                     <p>Нет товаров, соответствующих выбранным критериям.</p>
-                <?php endif; ?>
+                <?php endif;
+                 ?>
 
                 <!-- / Карточки товаров -->
 
@@ -162,51 +220,22 @@ $conn->close();
         const filterContainer = document.getElementById('category-filters');
         const productGrid = document.getElementById('catalog-grid');
         const productCards = productGrid.querySelectorAll('.product-card');
-        const filterLinks = filterContainer.querySelectorAll('a[data-filter]');
+        const filterLinks = filterContainer.querySelectorAll('a'); // Изменено для выбора всех ссылок в контейнере
 
         // Оставлен для подсветки активной ссылки (хотя PHP уже делает это)
         const urlParams = new URLSearchParams(window.location.search);
-        const activeFilter = urlParams.get('category') || 'all';
+        const activeCategory = urlParams.get('category') || 'all';
+
         filterLinks.forEach(link => {
-            if (link.getAttribute('data-filter') === activeFilter) {
+             const linkCategory = new URLSearchParams(link.search).get('category') || 'all';
+             if (linkCategory === activeCategory) {
                 link.classList.add('filter-active');
             } else {
                  link.classList.remove('filter-active');
             }
-             // Удаляем жирность из JS, так как PHP ее добавляет
-             if(link.querySelector('b')) {
-                 link.innerHTML = link.querySelector('b').innerHTML;
-             }
         });
-         const catalogLink = filterContainer.querySelector('a[data-filter="all"]');
-         if (catalogLink && activeFilter === 'all') {
-              catalogLink.innerHTML = `<b>${catalogLink.innerHTML}</b>`;
-         }
 
 
-        // Код клиентской фильтрации, который теперь не нужен:
-        /*
-        filterContainer.addEventListener('click', function(event) {
-            const targetLink = event.target.closest('a[data-filter]');
-            if (!targetLink) {
-                return;
-            }
-            event.preventDefault(); // Важно убрать это, если используем серверную фильтрацию
-            const filterValue = targetLink.getAttribute('data-filter');
-
-            filterLinks.forEach(link => link.classList.remove('filter-active'));
-            targetLink.classList.add('filter-active');
-
-            productCards.forEach(card => {
-                const cardCategory = card.getAttribute('data-category');
-                if (filterValue === 'all' || cardCategory === filterValue) {
-                    card.classList.remove('hidden');
-                } else {
-                    card.classList.add('hidden');
-                }
-            });
-        });
-        */
     });
 </script>
 

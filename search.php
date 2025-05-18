@@ -1,39 +1,63 @@
 <?php
-
-require_once 'products_data.php'; 
+require_once 'auth_check.php'; // Включаем скрипт проверки авторизации
+require_once 'mysqli_databaseconnect.php'; // Включаем подключение к базе данных
 
 $searchQuery = '';
-$matches = []; 
-$error_message = ''; 
+$matches = []; // Для хранения результатов поиска из БД
+$error_message = '';
 
 // --- Логика поиска (до вывода HTML) ---
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
     if (isset($_GET['search_query']) && !empty(trim($_GET['search_query']))) {
+        // Получаем и экранируем поисковый запрос
         $searchQuery = trim($_GET['search_query']);
-        $lowerSearchQuery = mb_strtolower($searchQuery, 'UTF-8'); // Используем mbstring
+        $safeSearchQuery = mysqli_real_escape_string($conn, $searchQuery);
 
-        // Цикл поиска совпадений
-        foreach ($products as $productId => $product) {
-            if (isset($product['name'])) {
-                $lowerProductName = mb_strtolower($product['name'], 'UTF-8');                               if (mb_strpos($lowerProductName, $lowerSearchQuery) !== false) { 
-                    $matches[$productId] = $product;
+        // SQL запрос для поиска по названию, краткому и полному описанию
+        // Используем LEFT JOIN с product_images для получения основного изображения
+        $sql = "SELECT
+                    p.id,
+                    p.name,
+                    p.alias,
+                    p.short_description,
+                    p.description,
+                    p.price,
+                    (SELECT image FROM product_images WHERE product_id = p.id ORDER BY id ASC LIMIT 1) AS main_image
+                FROM
+                    product p
+                WHERE
+                    p.name LIKE '%" . $safeSearchQuery . "%' OR
+                    p.short_description LIKE '%" . $safeSearchQuery . "%' OR
+                    p.description LIKE '%" . $safeSearchQuery . "%'";
+
+        $result = $conn->query($sql);
+
+        if ($result) { // Проверяем, успешно ли выполнен запрос
+            if ($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+                    $matches[] = $row;
                 }
-            }
-        }
-        // Конец цикла поиска
 
-        // Логика редиректа при единственном совпадении
-        if (count($matches) === 1) {
-            $singleMatch = reset($matches);
-            // Проверяем наличие и валидность URL для редиректа
-            if (isset($singleMatch['page_url']) && !empty($singleMatch['page_url']) && $singleMatch['page_url'] !== '#') {
-                // Важно: редирект ДО любого вывода HTML
-                header("Location: " . $singleMatch['page_url']);
-                exit; // Обязательно завершаем скрипт
+                 // Логика редиректа при единственном совпадении
+                if (count($matches) === 1) {
+                    $singleMatch = reset($matches);
+                     // Проверяем наличие алиаса для редиректа на страницу деталей товара
+                    if (isset($singleMatch['alias']) && !empty($singleMatch['alias'])) {
+                        // Важно: редирект ДО любого вывода HTML
+                        header("Location: product_detail.php?alias=" . htmlspecialchars($singleMatch['alias']));
+                        exit; // Обязательно завершаем скрипт
+                    }
+                    // Если алиаса нет, редиректа не будет, скрипт продолжится
+                }
+
+            } else {
+                // Если запрос был, но ничего не найдено
+                // $matches останется пустым, что будет обработано ниже в HTML
             }
-            // Если URL не подходит, редиректа не будет, скрипт продолжится
+        } else {
+            // Обработка ошибки выполнения запроса
+            $error_message = "Ошибка выполнения запроса: " . $conn->error;
         }
-        // Если редиректа не было (найдено 0 или >1 товаров, или URL невалидный), скрипт продолжается...
 
     } else if (isset($_GET['search_query'])) { // Запрос был передан, но он пустой
         $error_message = "Пожалуйста, введите поисковый запрос.";
@@ -41,9 +65,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     // Если параметр search_query вообще не передавался, $searchQuery останется пустым
 }
 
-
 // Безопасное значение поискового запроса для вывода в HTML
 $safeSearchQuery = isset($searchQuery) ? htmlspecialchars($searchQuery) : '';
+
+// Соединение закрывается в auth_check.php после всех операций,
+// или будет закрыто автоматически в конце скрипта, если не использовать персистентное соединение.
+// $conn->close();
 
 ?>
 <!DOCTYPE html>
@@ -112,10 +139,15 @@ $safeSearchQuery = isset($searchQuery) ? htmlspecialchars($searchQuery) : '';
 <!-- Шапка сайта -->
 <table class="layout-table header-table" cellpadding="0" cellspacing="0">
     <tr>
-        <td class="logo-cell"><a href="index.html"><img src="img/logo.png" alt="Логотип Столплит"></a></td>
+        <td class="logo-cell"><a href="index.php"><img src="img/logo.png" alt="Логотип Столплит"></a></td>
         <td class="title-cell"><h1>Столплит Мебель</h1></td>
         <td class="login-cell">
-            <a href="login.html">Войти</a>  <a href="register.html">Зарегистрироваться</a>
+            <?php if (isset($logged_in_user)): ?>
+                Привет, <?php echo htmlspecialchars($logged_in_user['username']); ?>!
+                <a href="logout.php">Выйти</a>
+            <?php else: ?>
+                <a href="login.php">Войти</a>&nbsp;&nbsp;<a href="register.php">Зарегистрироваться</a>
+            <?php endif; ?>
         </td>
     </tr>
 </table>
@@ -123,8 +155,8 @@ $safeSearchQuery = isset($searchQuery) ? htmlspecialchars($searchQuery) : '';
 <!-- Навигация сайта -->
 <table class="layout-table nav-table" cellpadding="0" cellspacing="0">
     <tr>
-        <td><a href="index.html">Главная</a></td>
-        <td><a href="catalog.html">Каталог</a></td>
+        <td><a href="index.php">Главная</a></td>
+        <td><a href="catalog.php">Каталог</a></td>
         <td><a href="contacts.html">Контакты</a></td>
         <td class="search-cell">
             <!-- Форма поиска на странице результатов -->
@@ -141,13 +173,13 @@ $safeSearchQuery = isset($searchQuery) ? htmlspecialchars($searchQuery) : '';
     <tr>
         <!-- Левая колонка (сайдбар) -->
         <td class="sidebar-left">
-             <a href="index.html">Главная</a><br>
-             <a href="catalog.html">Каталог</a><br>
+             <a href="index.php">Главная</a><br>
+             <a href="catalog.php">Каталог</a><br>
              <nav> <!-- Меню категорий (ссылки ведут в каталог) -->
-                 <a href="catalog.html#sofa">Диваны</a><br>
-                 <a href="catalog.html#wardrobe">Шкафы</a><br>
-                 <a href="catalog.html#bed">Кровати</a><br>
-                 <a href="catalog.html#table">Столы</a><br>
+                 <a href="catalog.php?category=Диваны">Диваны</a><br>
+                 <a href="catalog.php?category=Шкафы">Шкафы</a><br>
+                 <a href="catalog.php?category=Кровати">Кровати</a><br>
+                 <a href="catalog.php?category=Столы">Столы</a><br>
              </nav>
              <a href="contacts.html">Контакты</a>
         </td>
@@ -164,31 +196,32 @@ $safeSearchQuery = isset($searchQuery) ? htmlspecialchars($searchQuery) : '';
             <hr>
 
             <?php
-            // 1. Выводим сообщение об ошибке (например, пустой запрос)
+            // 1. Выводим сообщение об ошибке (например, пустой запрос или ошибка запроса)
             if (!empty($error_message)) {
                 echo "<p class='error-message'>" . htmlspecialchars($error_message) . "</p>";
             }
-            // 2. Если был выполнен поиск (запрос не был пустым)
+            // 2. Если был выполнен поиск (запрос не был пустым) и нет ошибок
             elseif (!empty($searchQuery)) {
-                // И найдены результаты (больше 0, т.к. 1 результат = редирект, но мог быть невалидный URL)
+                // И найдены результаты
                 if (count($matches) > 0) {
                     echo "<p>Найдено товаров: " . count($matches) . "</p>"; // Выводим количество
                     echo "<ul class='search-results-list'>"; // Начинаем список
                     foreach ($matches as $product) {
                         // Безопасно извлекаем данные
                         $product_name = isset($product['name']) ? htmlspecialchars($product['name']) : 'Без названия';
-                        $product_url = isset($product['page_url']) ? htmlspecialchars($product['page_url']) : '#';
-                        $thumb_img = isset($product['thumb_img']) ? htmlspecialchars($product['thumb_img']) : '';
-                        $product_desc = isset($product['description']) ? htmlspecialchars($product['description']) : '';
+                        $product_alias = isset($product['alias']) ? htmlspecialchars($product['alias']) : '#'; // Используем алиас для ссылки
+                        $main_image = isset($product['main_image']) ? htmlspecialchars($product['main_image']) : 'img/placeholder_thumb.jpg'; // Получаем основное изображение или заглушку
+                        $short_description = isset($product['short_description']) ? htmlspecialchars($product['short_description']) : ''; // Используем short_description
 
                         echo "<li>"; // Открываем элемент списка
-                        if (!empty($thumb_img)) {
-                            echo "<img src='" . $thumb_img . "' alt='" . $product_name . "'>";
-                        }
+                        // Выводим изображение
+                        echo "<img src='" . $main_image . "' alt='" . $product_name . "'>";
+
                         echo "<div class='details'>"; // Открываем div для текста
-                            echo "<a href='" . $product_url . "'>" . $product_name . "</a>";
-                            if (!empty($product_desc)) {
-                                echo "<p>" . $product_desc . "</p>";
+                            // Ссылка ведет на product_detail.php с алиасом
+                            echo "<a href='product_detail.php?alias=" . $product_alias . "'>" . $product_name . "</a>";
+                            if (!empty($short_description)) {
+                                echo "<p>" . $short_description . "</p>";
                             }
                         echo "</div>"; // Закрываем div для текста
                         echo "</li>"; // Закрываем элемент списка
@@ -200,7 +233,7 @@ $safeSearchQuery = isset($searchQuery) ? htmlspecialchars($searchQuery) : '';
                 }
             }
             // 3. Если страница открыта без запроса (и не было ошибки пустого запроса)
-            elseif (empty($error_message)) {
+            elseif (empty($error_message) && empty($searchQuery)) {
                  echo "<p class='search-prompt'>Пожалуйста, введите поисковый запрос в поле выше.</p>";
             }
             ?>
