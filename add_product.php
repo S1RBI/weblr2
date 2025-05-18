@@ -43,60 +43,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <title>Добавить товар</title>
     <link rel="stylesheet" href="css/style.css">
-    <style>
-        .form-container {
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        .form-container label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        .form-container input[type="text"],
-        .form-container textarea,
-        .form-container input[type="number"] {
-            width: calc(100% - 22px);
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        .form-container textarea {
-            height: 100px;
-            resize: vertical;
-        }
-        .form-container button {
-            background-color: #5cb85c;
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        .form-container button:hover {
-            background-color: #4cae4c;
-        }
-        .message {
-            margin-top: 10px;
-            padding: 10px;
-            border-radius: 4px;
-        }
-        .success {
-            background-color: #dff0d8;
-            color: #3c763d;
-            border: 1px solid #d6e9c6;
-        }
-        .error {
-            background-color: #f2dede;
-            color: #a94442;
-            border: 1px solid #ebccd1;
-        }
-    </style>
 </head>
 <body>
 

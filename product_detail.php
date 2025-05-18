@@ -4,6 +4,7 @@ require_once 'mysqli_databaseconnect.php';
 
 $product = null;
 $images = []; // Для хранения изображений товара
+$properties = []; // Для хранения свойств товара
 $error_message = '';
 
 // Проверяем соединение
@@ -39,6 +40,21 @@ if (isset($_GET['alias'])) {
             $error_message .= "Ошибка при получении изображений: " . $conn->error;
         }
 
+        // *********** НОВЫЙ КОД ДЛЯ ПОЛУЧЕНИЯ СВОЙСТВ ТОВАРА ***********
+        $sql_properties = "SELECT property_name, property_value, property_price FROM product_properties WHERE product_id = $product_id ORDER BY id ASC";
+        $result_properties = $conn->query($sql_properties);
+
+        if ($result_properties) { // Проверяем успешность выполнения запроса
+            if ($result_properties->num_rows > 0) {
+                while($row_property = $result_properties->fetch_assoc()) {
+                    $properties[] = $row_property;
+                }
+            }
+        } else {
+            $error_message .= "Ошибка при получении свойств товара: " . $conn->error;
+        }
+        // **********************************************************
+
     } else {
         // Товар не найден
         $error_message = "Товар с алиасом '" . htmlspecialchars($product_alias) . "' не найден.";
@@ -69,6 +85,25 @@ if (isset($_GET['alias'])) {
             margin-right: 10px;
             border: 1px solid #ddd;
             padding: 5px;
+        }
+
+        /* Стили для отображения свойств */
+        .product-properties ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .product-properties li {
+            margin-bottom: 10px;
+        }
+
+        .property-name {
+            font-weight: bold;
+        }
+
+        .property-price {
+            font-style: italic;
+            margin-left: 10px;
         }
     </style>
 </head>
@@ -149,7 +184,26 @@ if (isset($_GET['alias'])) {
                 <?php endif; ?>
 
                 <?php
-                // TODO: Здесь можно добавить вывод свойств товара из product_properties
+                // *********** НОВЫЙ КОД ДЛЯ ОТОБРАЖЕНИЯ СВОЙСТВ ТОВАРА ***********
+                if (!empty($properties)):
+                ?>
+                    <h3>Характеристики</h3>
+                    <div class="product-properties">
+                        <ul>
+                        <?php foreach ($properties as $property): ?>
+                            <li>
+                                <span class="property-name"><?php echo htmlspecialchars($property['property_name']); ?>:</span>
+                                <?php echo htmlspecialchars($property['property_value']); ?>
+                                <?php if ($property['property_price'] > 0): ?>
+                                    <span class="property-price">(+<?php echo htmlspecialchars($property['property_price']); ?> руб.)</span>
+                                <?php endif; ?>
+                            </li>
+                        <?php endforeach; ?>
+                        </ul>
+                    </div>
+                <?php
+                endif;
+                // ***************************************************************
                 ?>
 
                 <p><a href="edit_product.php?id=<?php echo $product['id']; ?>">Редактировать товар</a></p>
@@ -166,7 +220,7 @@ if (isset($_GET['alias'])) {
 
         <td class="sidebar-right">
              <a href="#"><img src="img/banner1.jpg" alt="Рекламный баннер 1"></a>
-             <a href="#"><img src="img/banner2.jpg" alt="Рекламный баннер 2"></a>
+             <a href="#"><img src="img/banner2.jpg" alt="Рекламный банner 2"></a>
              <a href="#"><img src="img/banner3.jpg" alt="Рекламный баннер 3"></a>
         </td>
     </tr>
